@@ -1,0 +1,29 @@
+version: '3.6'
+
+services:
+  traefik:
+    image: traefik:1.7.10
+    volumes:
+      - ${PWD}:/app
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - ./config/traefik.toml:/traefik.toml:ro
+    ports:
+      - 8080:8080
+      - 4242:4242
+
+  pingpong:
+    image: golang:1.12
+    working_dir: /app
+    volumes:
+      - ${PWD}:/app
+    labels:
+      - "traefik.frontend.entryPoints=mtls"
+      - "traefik.frontend.rule=Host:localhost"
+      - "traefik.port=4242"
+      - "traefik.protocol=h2c"
+      - "traefik.enable=true"
+    command:
+      - go
+      - run
+      - ./server/main.go
+      - --insecure

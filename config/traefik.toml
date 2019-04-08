@@ -1,0 +1,26 @@
+debug = true
+logLevel = "DEBUG"
+defaultEntryPoints = ["http"]
+
+insecureSkipVerify=true
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+  [entryPoints.mtls]
+    address = ":4242"
+  [entryPoints.mtls.tls]
+    [entryPoints.mtls.tls.ClientCA]
+    files = ["/app/dist/ca.cert"]
+    optional = false
+    [[entryPoints.mtls.tls.certificates]]
+    certFile = "/app/dist/server.cert"
+    keyFile = "/app/dist/server.key"
+
+[api]
+
+[web]
+
+[docker]
+  exposedByDefault = false
+  watch = true
