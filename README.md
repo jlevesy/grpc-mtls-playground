@@ -16,7 +16,7 @@ make run_server
 make run_client
 ```
 
-### Throught Traefik
+### Through Traefik
 
 ```
 make generate
